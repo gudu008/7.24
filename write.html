@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<button onclick="write1(3,5)">一档开始</button>
+<button onclick="write1(6,10)">二档开始</button>
+<button onclick="write1(9,15)">三档开始</button>
+<script>
+    function write1(number,speed) {
+
+
+        var life = 100;
+        var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+        var divs = [];
+
+        function create(num) {
+            var current = [];
+            for (var i = 0; i < num; i++) {
+                current.push(letters[Math.floor(letters.length * Math.random())]);
+            }
+            for (var i = 0; i < current.length; i++) {
+                var div = document.createElement("div");
+                div.innerHTML = current[i];
+                div.style.cssText = "position:absolute;left:" + document.documentElement.clientWidth * Math.random() + "px;top:" + (40 + Math.random()) + "px;font-size:" + 20 + 10 * Math.random() + "px";
+                document.body.appendChild(div);
+                divs.push(div);
+            }
+        }
+
+        create(number);
+        var s = 5;
+        setInterval(function () {
+            for (var i = 0; i < divs.length; i++) {
+                divs[i].style.top = divs[i].offsetTop + s + "px";
+            }
+        }, 50)
+        document.onkeydown = function (ev) {
+            var letter = String.fromCharCode(ev.keyCode);
+            for (var i = 0; i < divs.length; i++) {
+                while (divs[i].innerHTML == letter) {
+                    document.body.removeChild(divs[i]);
+                    divs.splice(i, 1);
+                    create(1);
+                    break;
+                }
+                while (parseInt(divs[i].style.marginTop)  > 800) {
+                    life = life - 1;
+                    document.body.removeChild(divs[i]);
+                    divs.splice(i, 1);
+                    create(1);
+                    break;
+                }
+            }
+        }
+        if (life < 90) {
+            var end = document.createElement("div");
+            end.style.cssText = "color:red;font-size:50px";
+        }
+
+    }
+</script>
+</body>
+</html>
